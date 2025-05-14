@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f2f2f2;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -53,7 +53,7 @@
     button {
       width: 100%;
       padding: 12px;
-      background-color: #28a745;
+      background-color: #6e8efb;
       border: none;
       color: white;
       font-size: 16px;
