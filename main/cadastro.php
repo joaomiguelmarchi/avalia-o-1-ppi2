@@ -1,3 +1,13 @@
+<?php
+
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+  include 'Usuario.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -66,10 +76,28 @@
     }
   </style>
 </head>
+
+<?php
+    function cadastrar_usuario() {
+      $nome = $_REQUEST["nome"];
+      $senha = $_REQUEST["senhaHash"];
+      $email = $_REQUEST["email"];
+
+      $usuario = new Usuario($nome, $email, $senha);
+      $usuario->save();
+
+      echo "Usuário cadastrado com sucesso.";
+    }
+
+    if (isset($_REQUEST["nome"]) || isset($_REQUEST["senhaHash"]) || isset($_REQUEST["email"])) {
+      cadastrar_usuario();
+    }
+?>
+
 <body>
   <div class="container">
     <h2>Cadastro de Usuário</h2>
-    <form action="#" id="formCadastro" method="post">
+    <form action="cadastro.php" id="formCadastro" method="post">
       <div class="form-group">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" name="nome" required>
@@ -83,6 +111,7 @@
         <input type="password" id="senha" name="senha" required>
       </div>
       <button type="submit">Cadastrar</button>
+      <input type="hidden" id="senhaHash" name="senhaHash">
     </form>
   </div>
 </body>
@@ -94,9 +123,7 @@
     var senha = document.getElementById('senha').value.trim();
 
     hashSenha(senha).then(function(hashedSenha) {
-      document.getElementById('senha').value = hashedSenha;
-      console.log('Senha hasheada:', hashedSenha); 
-
+      document.getElementById('senhaHash').value = hashedSenha;
       document.getElementById('formCadastro').submit(); 
     }).catch(function(err) {
       alert("Erro ao gerar hash da senha.");
