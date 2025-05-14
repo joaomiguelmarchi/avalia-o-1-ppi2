@@ -97,7 +97,7 @@
 <body>
   <div class="login-container">
     <h2>Entrar na Conta</h2>
-    <form action="#" method="post">
+    <form action="#" id="formLogin" method="post">
       <div class="form-group">
         <label for="email">E-mail:</label>
         <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required />
@@ -112,5 +112,32 @@
       Não tem uma conta? <a href="#">Cadastre-se</a>
     </div>
   </div>
+  <input type="hidden" id="senhaHash" name="senhaHash">
 </body>
+
+<script>
+    document.getElementById('formLogin').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const senhaInput = document.getElementById('senha').value;
+      const senhaHash = document.getElementById('senhaHash');
+
+      hashSenha(senhaInput).then(function(hashedSenha) {
+        senhaHash.value = hashedSenha; 
+        document.getElementById('formLogin').submit(); 
+      }).catch(function(err) {
+        alert("Erro ao gerar o hash da senha.");
+      });
+    });
+
+    async function hashSenha(senha) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(senha);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      return hashHex;
+    }
+</script>
+
 </html>
