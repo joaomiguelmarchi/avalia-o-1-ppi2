@@ -1,5 +1,9 @@
 <?php
 
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
     include 'ConnectionManager.php';
 
     class Usuario {
@@ -9,10 +13,38 @@
         public $email;
         public $senha;
 
-        function __construct($nome, $email, $senha) {
+        function __construct($nome = null, $email = null, $senha = null) {
             $this->nome = $nome;
             $this->email = $email;
             $this->senha = $senha;
+        }
+
+        static function getByEmailAndPassword($email, $senha) {
+            $connection = ConnectionManager::getConnection();
+        
+            $stmt = $connection->prepare("SELECT ID, NOME, SENHA, EMAIL FROM USUARIOS WHERE EMAIL = ? AND SENHA = ?");
+            if ($stmt === false) {
+                die("Erro no prepare: " . $connection->error);
+            }
+
+            $stmt->bind_param("ss", $email, $senha);
+            $stmt->execute();
+        
+            $result = $stmt->get_result();
+        
+            if ($result->num_rows === 1) {
+        
+                $row = $result->fetch_assoc();
+
+                $usuario = new Usuario();
+                $usuario->id = $row['ID'];
+                $usuario->nome = $row['NOME'];
+                $usuario->email = $row['EMAIL'];
+    
+                return $usuario;
+            }
+        
+            return null;
         }
 
         function save() {

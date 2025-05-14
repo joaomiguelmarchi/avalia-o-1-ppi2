@@ -97,7 +97,7 @@
 <body>
   <div class="login-container">
     <h2>Entrar na Conta</h2>
-    <form action="#" id="formLogin" method="post">
+    <form action="processaLogin.php" method="post">
       <div class="form-group">
         <label for="email">E-mail:</label>
         <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required />
