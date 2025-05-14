@@ -69,7 +69,7 @@
 <body>
   <div class="container">
     <h2>Cadastro de Usuário</h2>
-    <form action="#" method="post">
+    <form action="#" id="formCadastro" method="post">
       <div class="form-group">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" name="nome" required>
@@ -86,4 +86,31 @@
     </form>
   </div>
 </body>
+
+<script>
+  document.getElementById('formCadastro').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    var senha = document.getElementById('senha').value.trim();
+
+    hashSenha(senha).then(function(hashedSenha) {
+      document.getElementById('senha').value = hashedSenha;
+      console.log('Senha hasheada:', hashedSenha); 
+
+      document.getElementById('formCadastro').submit(); 
+    }).catch(function(err) {
+      alert("Erro ao gerar hash da senha.");
+    });
+  });
+
+  async function hashSenha(senha) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(senha);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer)); 
+    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join(''); 
+    return hashHex;
+  }
+</script>
+
 </html>
