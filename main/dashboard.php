@@ -92,7 +92,7 @@
     <div class="dashboard-header">
       <h2>Olá, João Miguel 👋</h2>
       <div class="dashboard-buttons">
-        <button>Cadastrar Usuário</button>
+        <button href="../cadastro.php">Cadastrar Usuário</button>
         <button>Logout</button>
       </div>
     </div>
@@ -105,16 +105,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td>Ana Souza</td><td>ana.souza@email.com</td></tr>
-        <tr><td>Bruno Lima</td><td>bruno.lima@email.com</td></tr>
-        <tr><td>Carla Mendes</td><td>carla.m@email.com</td></tr>
-        <tr><td>Diego Martins</td><td>diego.m@email.com</td></tr>
-        <tr><td>Eduarda Alves</td><td>edu.alves@email.com</td></tr>
-        <tr><td>Fernando Silva</td><td>fernando@email.com</td></tr>
-        <tr><td>Gabriela Rocha</td><td>gabriela@email.com</td><tr>
-        <tr><td>Henrique Dias</td><td>henrique@email.com</td></tr>
-        <tr><td>Isabela Nunes</td><td>isabela@email.com</td></tr>
-        <tr><td>José Costa</td><td>jose.costa@email.com</td></tr>
+        <?php
+
+        include 'Usuario.php';
+
+        foreach (Usuario::getAll() as $u) {
+          echo("<tr><td>" . $u->nome . "</td><td>" . $u->email . "</td></tr>");
+        }
+
+        ?>
       </tbody>
     </table>
   </div>

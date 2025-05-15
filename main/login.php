@@ -1,3 +1,12 @@
+<?php
+
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+  include 'Usuario.php';
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -94,10 +103,11 @@
     }
   </style>
 </head>
+
 <body>
   <div class="login-container">
     <h2>Entrar na Conta</h2>
-    <form action="processaLogin.php" method="post">
+    <form action="processaLogin.php" method="post" id="formLogin">
       <div class="form-group">
         <label for="email">E-mail:</label>
         <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required />
@@ -106,13 +116,13 @@
         <label for="senha">Senha:</label>
         <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required />
       </div>
+      <div class="footer-text">
+        Não tem uma conta? <a href="#">Cadastre-se</a>
+      </div>
       <button type="submit">Entrar</button>
+      <input type="hidden" id="senhaHash" name="senhaHash">
     </form>
-    <div class="footer-text">
-      Não tem uma conta? <a href="#">Cadastre-se</a>
-    </div>
   </div>
-  <input type="hidden" id="senhaHash" name="senhaHash">
 </body>
 
 <script>
@@ -123,7 +133,7 @@
       const senhaHash = document.getElementById('senhaHash');
 
       hashSenha(senhaInput).then(function(hashedSenha) {
-        senhaHash.value = hashedSenha; 
+        senhaHash.value = hashedSenha;
         document.getElementById('formLogin').submit(); 
       }).catch(function(err) {
         alert("Erro ao gerar o hash da senha.");

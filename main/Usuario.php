@@ -47,6 +47,36 @@
             return null;
         }
 
+        static function getAll() {
+            $connection = ConnectionManager::getConnection();
+        
+            $stmt = $connection->prepare("SELECT NOME, EMAIL FROM USUARIOS");
+            if ($stmt === false) {
+                die("Erro no prepare: " . $connection->error);
+            }
+
+            $stmt->execute();
+        
+            $result = $stmt->get_result();
+        
+            if ($result->num_rows > 0) {
+                
+                $usuarios = [];
+
+                while ($row = $result->fetch_assoc()) {
+                    $usuario = new Usuario();
+                    $usuario->nome = $row['NOME'];
+                    $usuario->email = $row['EMAIL'];
+
+                    $usuarios[] = $usuario;
+                }
+
+                return $usuarios;
+            }
+        
+            return null;
+        }
+
         function save() {
             $connection = ConnectionManager::getConnection();
             $prepared_statement = $connection->prepare("INSERT INTO USUARIOS (NOME, SENHA, EMAIL) VALUES (?, ?, ?)");
