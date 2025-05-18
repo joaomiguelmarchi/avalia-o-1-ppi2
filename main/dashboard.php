@@ -104,18 +104,30 @@
           <th>Email</th>
         </tr>
       </thead>
-      <tbody>
-        <?php
-
-        include 'Usuario.php';
-
-        foreach (Usuario::getAll() as $u) {
-          echo("<tr><td>" . $u->nome . "</td><td>" . $u->email . "</td></tr>");
-        }
-
-        ?>
+      <tbody id="tabela-usuarios">
       </tbody>
     </table>
   </div>
+  <script>
+    function carregarUsuarios() {
+      fetch('usuarios_api.php')
+        .then(response => response.json())
+        .then(data => {
+          const tbody = document.getElementById('user-table');
+          tbody.innerHTML = ''; 
+
+          data.forEach(usuario => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${usuario.nome}</td><td>${usuario.email}</td>`;
+            tbody.appendChild(tr);
+          });
+        })
+        .catch(error => {
+          console.error('Erro ao carregar usuários:', error);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarUsuarios);
+  </script>
 </body>
 </html>
