@@ -92,8 +92,8 @@
     <div class="dashboard-header">
       <h2>Olá, João Miguel 👋</h2>
       <div class="dashboard-buttons">
-        <button href="../cadastro.php">Cadastrar Usuário</button>
-        <button>Logout</button>
+        <button onclick="location.href='../main/cadastro.php'">Cadastrar Usuário</button>
+        <button onclick="location.href='../main/login.php'">Logout</button>
       </div>
     </div>
 
