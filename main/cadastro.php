@@ -15,6 +15,50 @@ if (session_status() === PHP_SESSION_NONE) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro de Usuário</title>
   <style>
+    .infobar {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #4CAF50; /* ou #f44336 para erro */
+        color: white;
+        padding: 12px 15px;
+        border-radius: 5px;
+        font-family: sans-serif;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        max-width: 320px;
+        min-width: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        z-index: 1000;
+    }
+
+    .infobar.erro {
+        background-color: #f44336;
+    }
+
+    .texto {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .fechar {
+        flex-shrink: 0;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+        height: auto;
+        width: auto;
+    }
+    
     body {
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #6e8efb, #a777e3);
@@ -86,7 +130,20 @@ if (session_status() === PHP_SESSION_NONE) {
       $usuario = new Usuario($nome, $email, $senha);
       $usuario->save();
 
-      echo "Usuário cadastrado com sucesso.";
+      echo "
+       <div class='infobar $tipo' id='infobar'>
+        <span class='texto'>$mensagem</span>
+        <button class='fechar' onclick='fecharInfobar()'>&times;</button>
+    </div>
+    <script>
+        setTimeout(() => {
+            document.getElementById('infobar').style.display = 'none';
+        }, 5000);
+        function fecharInfobar() {
+            document.getElementById('infobar').style.display = 'none';
+        }
+    </script>
+      ";
     }
 
     if (isset($_REQUEST["nome"]) || isset($_REQUEST["senhaHash"]) || isset($_REQUEST["email"])) {
