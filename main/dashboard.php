@@ -113,6 +113,14 @@ header("Pragma: no-cache");
         </tr>
       </thead>
       <tbody id="tabela-usuarios">
+      <?php
+        include 'Usuario.php';
+
+        foreach (Usuario::getAll() as $u) {
+          echo("<tr><td>" . $u->nome . "</td><td>" . $u->email . "</td></tr>");
+        }
+
+        ?>
       </tbody>
     </table>
   </div>
